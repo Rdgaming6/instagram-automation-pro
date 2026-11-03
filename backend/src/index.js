@@ -1,0 +1,10 @@
+const express = require('express');
+const cors = require('cors');
+const app = express();
+app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
+app.use('/webhook', require('./routes/webhook'));
+app.use('/api', require('./routes/api'));
+app.get('/health', (_req, res) => res.json({ ok: true, mode: (process.env.SUPABASE_URL ? 'live' : 'demo') }));
+const PORT = process.env.PORT || 3001;
+if (require.main === module) app.listen(PORT, () => console.log(`Instagram Automation Pro backend on :${PORT} (${process.env.SUPABASE_URL ? 'live' : 'demo'} mode)`));
+module.exports = app;
